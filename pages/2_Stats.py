@@ -42,15 +42,22 @@ st.write(f"""
 number_of_games = [i for i in range(1, st.session_state.total_games + 1)]
 
 st.write(len(st.session_state.guesses_used), len(st.session_state.hints_used), len(number_of_games))
+
 data = pd.DataFrame({"Guesses": st.session_state.guesses_used, 
                     "Hints": st.session_state.hints_used,
+                    "Guess Values": st.session_state.guess_values,
                     "Games": number_of_games})
 
+data["Normalized Guess Value"] = data.apply(lambda row: row["Guess Values"] / row["Guesses"] if row["Guesses"] != 0 else 0, axis=1)
 
 st.bar_chart(data,y=["Guesses", "Hints"],x ="Games", x_label="Game", y_label="Number of Guesses", stack="layered")   
 
-st.write(f"average quality of guesses overall: {round(sum(st.session_state.guess_values)/st.session_state.total_games, 2) if st.session_state.total_games > 0 else 0}") # add a help icon to show what makes a good guess
+st.write("""
+The quality of your guess is evaluated based on how close you are to the region of the target country.
+- If they are on the same continent you get + 1 point. 
+- If they are in the same subregion (e.g. Central Europe, Caribbean) you get + 2 points.
+- If you guessed correctly, you get + 3 points.
+- But the result will be divided by the total amount. So the more guesses you need, the less points you will get!""")
 
-
-st.line_chart(st.session_state.guess_values)
+st.line_chart(data["Normalized Guess Value"])
 # endregion 

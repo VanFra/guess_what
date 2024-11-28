@@ -68,6 +68,7 @@ client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 if "start_button" not in st.session_state:
     st.session_state.start_button = None
+    
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
@@ -127,7 +128,7 @@ for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-
+# region Game Logic
 if st.session_state.game_running == False:
     st.write("To start the game, click the button below.")
 
@@ -167,6 +168,7 @@ if st.session_state.game_running == True:
                 st.session_state.messages.append({"role": "assistant", "content": f"🎉 Correct! The country was {st.session_state.random_country}."})
                 st.session_state.games_won += 1
                 st.session_state.guesses_left -= 1
+                st.session_state.guess_value = st.session_state.guess_value + 3
                 save_stats()
                 st.session_state.game_running = False
                 
@@ -203,6 +205,5 @@ if st.session_state.game_running == True:
                     st.markdown(f"Game over! The country was {st.session_state.random_country}.")
                 st.session_state.messages.append({"role": "assistant", "content": f"Game over! The country was {st.session_state.random_country}."})
                 save_stats()
-                st.session_state.game_running = False 
-                
+                st.session_state.game_running = False                 
 # endregion
