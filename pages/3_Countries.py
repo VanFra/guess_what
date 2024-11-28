@@ -1,6 +1,6 @@
 import streamlit as st
 from openai import OpenAI
-from pages.Game import get_country_list
+from guess_what import get_country_list
 
 #set page header
 st.title("_Guess What?_ - :rainbow[Country Edition]")
