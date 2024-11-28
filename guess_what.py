@@ -32,6 +32,7 @@ def save_stats():
     st.session_state.hints_used.append(st.session_state.hint_counter)
     st.session_state.guesses_used.append(5-st.session_state.guesses_left)
     st.session_state.guess_values.append(st.session_state.guess_value)
+    st.session_state.number_of_games.append(st.session_state.total_games)
 
 def reset_counters():
     st.session_state.guesses_left = 5
@@ -68,7 +69,7 @@ client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 if "start_button" not in st.session_state:
     st.session_state.start_button = None
-    
+
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
@@ -96,6 +97,9 @@ if "hint_counter" not in st.session_state:
 # initializing stats variables
 if "total_games" not in st.session_state:
     st.session_state.total_games = 0
+    
+if "number_of_games" not in st.session_state:
+        st.session_state.number_of_games = []
 
 if "games_won" not in st.session_state:
     st.session_state.games_won = 0
@@ -121,7 +125,7 @@ st.title("_Guess What?_ - :rainbow[Country Edition]")
 st.image("https://www.pngkit.com/png/full/81-815202_flag-banner-png.png")
 
 st.write("""Do you want to play a game? I'll choose a country and you have to guess correctly within five guesses. 
-        You also have 5 hints. Let's play!""")
+        You also have 5 hints. If you need help, just ask for a "hint". Let's play!""")
 
 # Display chat messages from history on app rerun
 for message in st.session_state.messages:
@@ -137,6 +141,7 @@ if st.session_state.game_running == False:
     else:
         st.session_state.start_button = st.button("Play again")
     st.session_state.messages.clear()
+
 
 
 
@@ -199,6 +204,7 @@ if st.session_state.game_running == True:
                 with st.chat_message("assistant"):
                     st.markdown(f"❌ Wrong! You have {st.session_state.guesses_left} guesses left.")
                 st.session_state.messages.append({"role": "assistant", "content": f"❌ Wrong! You have {st.session_state.guesses_left} guesses left."})
+            
             # no guesses left -> game over
             else:
                 with st.chat_message("assistant"):

@@ -20,6 +20,9 @@ if "guess_value" not in st.session_state:
 if "guess_values" not in st.session_state:
         st.session_state.guess_values = []
 
+if "number_of_games" not in st.session_state:
+        st.session_state.number_of_games = []
+
 
 #set page header
 st.title("_Guess What?_ - :rainbow[Country Edition]")
@@ -39,14 +42,11 @@ st.write(f"""
                 - You have used _{round(sum(st.session_state.guesses_used)/len(st.session_state.guesses_used),2) if len(st.session_state.guesses_used) > 0 else 0}_  guesses on average. \n
                 """)
 
-number_of_games = [i for i in range(1, st.session_state.total_games + 1)]
-
-st.write(len(st.session_state.guesses_used), len(st.session_state.hints_used), len(number_of_games))
 
 data = pd.DataFrame({"Guesses": st.session_state.guesses_used, 
                     "Hints": st.session_state.hints_used,
                     "Guess Values": st.session_state.guess_values,
-                    "Games": number_of_games})
+                    "Games": st.session_state.number_of_games})
 
 data["Normalized Guess Value"] = data.apply(lambda row: row["Guess Values"] / row["Guesses"] if row["Guesses"] != 0 else 0, axis=1)
 
