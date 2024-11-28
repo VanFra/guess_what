@@ -119,7 +119,6 @@ st.set_page_config(page_title="Guess What - Country Edition",page_icon=":materia
 st.title("_Guess What?_ - :rainbow[Country Edition]")
 st.image("https://www.pngkit.com/png/full/81-815202_flag-banner-png.png")
 
-
 st.write("""Do you want to play a game? I'll choose a country and you have to guess correctly within five guesses. 
         You also have 5 hints. Let's play!""")
 
@@ -145,7 +144,6 @@ if st.session_state.game_running == False:
         reset_counters()
         st.session_state.total_games += 1
         st.session_state.random_country = random.choice(st.session_state.countries)
-        st.write("Random Country",st.session_state.random_country)
         st.session_state.hints = get_country_hint(st.session_state.random_country)
         st.session_state.game_running = True
 
@@ -187,7 +185,7 @@ if st.session_state.game_running == True:
         # if no country is mentioned
         elif not any(country in prompt.lower() for country in st.session_state.countries):
             with st.chat_message("assistant"):
-                st.markdown("Please enter a valid country name. If you are unsure of spelling you can check the list of countries.")
+                st.markdown("Please enter a valid country name. If you are unsure of spelling you can check the list of countries [here](https://guesswhatcountry.streamlit.app/Countries).")
             st.session_state.messages.append({"role": "assistant", "content": "Please enter a valid country name."})
     
         # if the guess was wrong
